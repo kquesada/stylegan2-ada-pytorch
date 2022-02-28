@@ -29,6 +29,12 @@ def error(msg):
     print('Error: ' + msg)
     sys.exit(1)
 
+## used only for testing line 429 "dataset_attrs != cur_image_attrs" error.
+## the main goal is to avoid saving the image that produces the error (skip it) and continue the process.
+def error2(msg):
+    print('Error: ' + msg)
+    continue
+
 #----------------------------------------------------------------------------
 
 def maybe_min(a: int, b: Optional[int]) -> int:
@@ -423,7 +429,8 @@ def convert_dataset(
                 error('Image width/height after scale and crop are required to be power-of-two')
         elif dataset_attrs != cur_image_attrs:
             err = [f'  dataset {k}/cur image {k}: {dataset_attrs[k]}/{cur_image_attrs[k]}' for k in dataset_attrs.keys()]
-            error(f'Image {archive_fname} attributes must be equal across all images of the dataset.  Got:\n' + '\n'.join(err))
+            # error(f'Image {archive_fname} attributes must be equal across all images of the dataset.  Got:\n' + '\n'.join(err))
+            error2(f'Image {archive_fname} attributes must be equal across all images of the dataset, this image will not be saved.  Got:\n' + '\n'.join(err))
 
         # Save the image as an uncompressed PNG.
         img = PIL.Image.fromarray(img, { 1: 'L', 3: 'RGB' }[channels])
