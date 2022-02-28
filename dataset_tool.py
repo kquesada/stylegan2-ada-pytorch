@@ -33,7 +33,6 @@ def error(msg):
 ## the main goal is to avoid saving the image that produces the error (skip it) and continue the process.
 def error2(msg):
     print('Error: ' + msg)
-    continue
 
 #----------------------------------------------------------------------------
 
@@ -431,6 +430,7 @@ def convert_dataset(
             err = [f'  dataset {k}/cur image {k}: {dataset_attrs[k]}/{cur_image_attrs[k]}' for k in dataset_attrs.keys()]
             # error(f'Image {archive_fname} attributes must be equal across all images of the dataset.  Got:\n' + '\n'.join(err))
             error2(f'Image {archive_fname} attributes must be equal across all images of the dataset, this image will not be saved.  Got:\n' + '\n'.join(err))
+            continue
 
         # Save the image as an uncompressed PNG.
         img = PIL.Image.fromarray(img, { 1: 'L', 3: 'RGB' }[channels])
